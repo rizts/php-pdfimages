@@ -53,9 +53,7 @@ class PdfImages extends AbstractBinary
             throw new RuntimeException('Destination folder "%s" is not writable', $destinationRootFolder);
         }
 
-        $destinationFolder = $destinationRootFolder . '/' . uniqid('pdfimages').'/';
-
-        mkdir($destinationFolder);
+        $destinationFolder = $destinationRootFolder . '/';
 
         $options = $this->buildOptions($saveAsJpeg, $inputPdf, $destinationFolder);
 
