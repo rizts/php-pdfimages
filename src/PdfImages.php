@@ -35,7 +35,7 @@ class PdfImages extends AbstractBinary
      * @return \FilesystemIterator
      * @throws Exception\RuntimeException
      */
-    public function extractImages($inputPdf, $destinationRootFolder = null, $saveAsJpeg = true)
+    public function extractImages($inputPdf, $destinationRootFolder = null, $saveAs = 'jpg')
     {
         if (false === is_file($inputPdf)) {
             throw new RuntimeException(sprintf('Input file "%s" not found', $inputPdf));
@@ -55,7 +55,7 @@ class PdfImages extends AbstractBinary
 
         $destinationFolder = $destinationRootFolder . '/';
 
-        $options = $this->buildOptions($saveAsJpeg, $inputPdf, $destinationFolder);
+        $options = $this->buildOptions($saveAs, $inputPdf, $destinationFolder);
 
         try {
             $this->command($options);
@@ -67,16 +67,20 @@ class PdfImages extends AbstractBinary
     }
 
     /**
-     * @param bool $saveAsJpeg
+     * @param string $saveAs
      * @param $inputPdf
      * @param null $destinationRootFolder
      */
-    private function buildOptions($saveAsJpeg, $inputPdf, $destinationFolder)
+    private function buildOptions($saveAs, $inputPdf, $destinationFolder)
     {
         $options = array();
 
-        if ($saveAsJpeg) {
-            $options[] = '-j';
+        if ($saveAs != '') {
+            if ($saveAs == 'jpg') {
+                $options[] = '-j';
+            } else {
+                $options[] = '-'.$saveAs;
+            }
         }
 
         $options[] = $inputPdf;
